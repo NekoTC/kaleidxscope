@@ -7,8 +7,6 @@ import KeySongsGrid from './KeySongsGrid';
 interface GateDetail {
   name: string;
   updateDate: string;
-  status: 'locked' | 'unlocking' | 'unlocked';
-  progress: number;
   guide?: {
     discovery: string;
     keySongs: {
@@ -27,8 +25,6 @@ const gateData: Record<number, GateDetail> = {
   1: {
     name: '青春地域「青の扉」',
     updateDate: '2026-01-23',
-    status: 'unlocked',
-    progress: 100,
     guide: {
       discovery: '天空街区域6完走',
       keySongs: {
@@ -102,8 +98,6 @@ const gateData: Record<number, GateDetail> = {
   2: {
     name: '神明地域「白の扉」',
     updateDate: '2026-02-10',
-    status: 'locked',
-    progress: 60,
     guide: {
       discovery: '天界区域8完走',
       keySongs: {
@@ -129,15 +123,11 @@ const gateData: Record<number, GateDetail> = {
   3: {
     name: '黑蔷薇地域「紫の扉」',
     updateDate: '2026-02-03',
-    status: 'locked',
-    progress: 0,
     songs: [],
   },
   4: {
     name: '终末地域「黒の扉」',
     updateDate: '2026-02-04',
-    status: 'unlocked',
-    progress: 100,
     songs: [
       { title: '紅蓮', difficulty: 'EXPERT', bpm: 200 },
       { title: '暗夜の魔法', difficulty: 'MASTER', bpm: 210 },
@@ -146,8 +136,6 @@ const gateData: Record<number, GateDetail> = {
   5: {
     name: '启程地域「黄の扉」',
     updateDate: '2026-02-05',
-    status: 'unlocking',
-    progress: 35,
     songs: [
       { title: 'サンシャイン', difficulty: 'EASY', bpm: 140 },
     ],
@@ -155,15 +143,11 @@ const gateData: Record<number, GateDetail> = {
   6: {
     name: '世界树地域「赤の扉」',
     updateDate: '2026-02-06',
-    status: 'locked',
-    progress: 0,
     songs: [],
   },
   7: {
     name: '棱镜地域（PRiSM Area）',
     updateDate: '2026-02-07',
-    status: 'unlocked',
-    progress: 100,
     songs: [
       { title: 'プリズムタワー', difficulty: 'MASTER', bpm: 220 },
     ],
@@ -171,15 +155,11 @@ const gateData: Record<number, GateDetail> = {
   9: {
     name: 'KALEIDXSCOPE「希望の扉」',
     updateDate: '2026-02-08',
-    status: 'locked',
-    progress: 0,
     songs: [],
   },
   10: {
     name: 'KALEIDXSCOPE「去寻找最后的希望」',
     updateDate: '2026-02-09',
-    status: 'locked',
-    progress: 0,
     songs: [],
   },
 };
@@ -194,19 +174,12 @@ const difficultyColors: Record<string, string> = {
 
 const statusConfig = {
   locked: {
-    label: '已锁定',
+    label: '未解禁',
     color: 'bg-gray-500',
-    icon: '🔒',
-  },
-  unlocking: {
-    label: '解锁中',
-    color: 'bg-yellow-500',
-    icon: '🔓',
   },
   unlocked: {
-    label: '已解锁',
+    label: '已解禁',
     color: 'bg-green-500',
-    icon: '✓',
   },
 };
 
@@ -254,6 +227,15 @@ function getRequirements(daysSinceUpdate: number) {
   return { hpRequirement, difficultyRequirement };
 }
 
+function getStatusByDate(updateDate: string): 'locked' | 'unlocked' {
+  const daysUntilUpdate = getDaysUntilUpdate(updateDate);
+  if (daysUntilUpdate > 0) {
+    return 'locked';
+  } else {
+    return 'unlocked';
+  }
+}
+
 function getSongIdByName(songName: string, musicDB: Record<string, { name: string }>): string | null {
   for (const [id, song] of Object.entries(musicDB)) {
     if (song.name === songName) {
@@ -266,12 +248,12 @@ function getSongIdByName(songName: string, musicDB: Record<string, { name: strin
 export default async function GatePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const gateId = parseInt(id);
-  
+
   // 读取 musicDB
   const musicDbPath = path.join(process.cwd(), 'app', 'res', 'musicDB.json');
   const musicDbContent = fs.readFileSync(musicDbPath, 'utf-8');
   const musicDB = JSON.parse(musicDbContent) as Record<string, { name: string }>;
-  
+
   const gate = gateData[gateId];
 
   if (!gate) {
@@ -287,7 +269,7 @@ export default async function GatePage({ params }: { params: Promise<{ id: strin
     );
   }
 
-  const config = statusConfig[gate.status];
+  const config = statusConfig[getStatusByDate(gate.updateDate)];
   const daysSinceUpdate = getDaysSinceUpdate(gate.updateDate);
   const daysUntilUpdate = getDaysUntilUpdate(gate.updateDate);
   const { hpRequirement, difficultyRequirement } = getRequirements(daysSinceUpdate);
@@ -313,13 +295,8 @@ export default async function GatePage({ params }: { params: Promise<{ id: strin
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Status Card */}
             <div className="border border-gray-300 dark:border-gray-700 p-6 bg-white dark:bg-[#16181d]">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-mono uppercase">Gate Status</span>
-                <span className="text-2xl">{config.icon}</span>
-              </div>
-              <div className={`inline-block px-3 py-1 rounded text-sm font-medium ${config.color} text-white`}>
-                {config.label}
-              </div>
+              <div className="text-sm font-mono uppercase mb-2">当前状态</div>
+              <div className="text-3xl font-bold">{config.label}</div>
             </div>
 
             {/* Countdown Card */}
