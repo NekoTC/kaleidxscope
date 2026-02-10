@@ -4835,6 +4835,22 @@
     "name": "Cryptarithm",
     "version": 23
   },
+  "11742": {
+    "name": "Ourania",
+    "version": 23
+  },
+  "11743": {
+    "name": "天蓋",
+    "version": 23
+  },
+  "11744": {
+    "name": "Deicide",
+    "version": 23
+  },
+  "11745": {
+    "name": "氷滅の135小節",
+    "version": 23
+  },
   "11746": {
     "name": "Divide et impera!",
     "version": 23
@@ -4887,6 +4903,22 @@
     "name": "Chronomia",
     "version": 23
   },
+  "11772": {
+    "name": "人マニア",
+    "version": 23
+  },
+  "11774": {
+    "name": "メイトなやつら（FEAT. 天開司, 佐藤ホームズ, あっくん大魔王 & 歌衣メイカ）",
+    "version": 23
+  },
+  "11776": {
+    "name": "ゆけむり魂温泉 II",
+    "version": 23
+  },
+  "11777": {
+    "name": "人間が大好きなこわれた妖怪の唄",
+    "version": 23
+  },
   "11778": {
     "name": "シリウスの輝きのように",
     "version": 23
@@ -4895,12 +4927,40 @@
     "name": "プラネタリウム・レヴュー",
     "version": 23
   },
+  "11780": {
+    "name": "演劇",
+    "version": 23
+  },
+  "11781": {
+    "name": "無間嫉妬劇場『666』",
+    "version": 23
+  },
+  "11782": {
+    "name": "夢現妄想世界",
+    "version": 23
+  },
+  "11784": {
+    "name": "イガク",
+    "version": 23
+  },
   "11792": {
     "name": "はげしこの夜 -Psylent Crazy Night-",
     "version": 23
   },
   "11805": {
     "name": "リアライズ",
+    "version": 23
+  },
+  "11944": {
+    "name": "Restricted Access",
+    "version": 23
+  },
+  "11945": {
+    "name": "胡蝶乃舞",
+    "version": 23
+  },
+  "11946": {
+    "name": "零號車輛",
     "version": 23
   }
 }
